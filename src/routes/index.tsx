@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { projects } from "@/data/projects";
 
-const navigation = ["About", "Experience", "Projects", "Skills", "Education", "Contact"];
+const navigation = ["About", "Experience", "Projects", "Skills", "Education", "Contact", "Resume"];
 const skillGroups = [
   { title: "Product Analytics", items: ["Product Analytics", "Web Analytics", "A/B Testing"] },
   { title: "Data & BI", items: ["SQL", "Power BI", "Excel", "Looker Studio", "BigQuery"] },
@@ -39,8 +39,47 @@ export const Route = createFileRoute("/")({
 
 function NavLinks({ mobile = false }: { mobile?: boolean }) {
   return navigation.map((item) => {
-    const link = <a href={`#${item.toLowerCase()}`} className={mobile ? "border-b border-border py-4 text-lg font-medium" : "text-sm text-muted-foreground transition-colors hover:text-foreground"}>{item}</a>;
-    return mobile ? <SheetClose asChild key={item}>{link}</SheetClose> : <span key={item}>{link}</span>;
+    const isResume = item === "Resume";
+
+    const link = isResume ? (
+      <a
+        href={resumeUrl}
+        download
+        onClick={() => {
+          (window as any).dataLayer = (window as any).dataLayer || [];
+          (window as any).dataLayer.push({
+            event: "resume_download",
+            button_position: "HB",
+          });
+        }}
+        className={
+          mobile
+            ? "border-b border-border py-4 text-lg font-medium"
+            : "text-sm text-muted-foreground transition-colors hover:text-foreground"
+        }
+      >
+        Resume
+      </a>
+    ) : (
+      <a
+        href={`#${item.toLowerCase()}`}
+        className={
+          mobile
+            ? "border-b border-border py-4 text-lg font-medium"
+            : "text-sm text-muted-foreground transition-colors hover:text-foreground"
+        }
+      >
+        {item}
+      </a>
+    );
+
+    return mobile ? (
+      <SheetClose asChild key={item}>
+        {link}
+      </SheetClose>
+    ) : (
+      <span key={item}>{link}</span>
+    );
   });
 }
 
@@ -65,9 +104,34 @@ function PortfolioPage() {
         <nav aria-label="Main navigation" className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-glass-border bg-glass px-4 py-3 shadow-card backdrop-blur-xl sm:px-5 md:flex md:justify-between">
           <a href="#home" className="min-w-0 truncate font-display text-sm font-semibold">Atharva Thakare<span className="text-primary">.</span></a>
           <div className="hidden items-center gap-6 md:flex"><NavLinks /></div>
-              <Button asChild variant="portfolio" size="sm" className="hidden md:inline-flex"><a href={resumeUrl} download><Download /> Resume</a></Button>
+              <Button asChild variant="portfolio" size="sm" className="hidden md:inline-flex"><a
+  onClick={() => {
+  (window as any).dataLayer = (window as any).dataLayer || [];
+  (window as any).dataLayer.push({
+    event: "resume_download",
+    button_position: "top",
+  });
+}}
+>
+  <Download /> Resume
+</a></Button>
           <Sheet>
-            <SheetTrigger asChild><Button variant="glass" size="icon" className="shrink-0 md:hidden" aria-label="Open navigation"><Menu /></Button></SheetTrigger>
+            <SheetTrigger asChild>
+  <Button
+    variant="glass"
+    size="icon"
+    className="shrink-0 md:hidden"
+    aria-label="Open navigation"
+    onClick={() => {
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: "HB",
+      });
+    }}
+  >
+    <Menu />
+  </Button>
+</SheetTrigger>
             <SheetContent className="border-glass-border bg-background/95 backdrop-blur-xl">
               <SheetTitle className="font-display">Atharva Thakare</SheetTitle>
               <div className="mt-8 flex flex-col"><NavLinks mobile /></div>
@@ -137,7 +201,20 @@ function PortfolioPage() {
           </div>
         </div></section>
 
-        <section id="resume" className="mx-auto max-w-6xl px-5 py-16 sm:px-6"><div className="grid gap-6 rounded-3xl border border-glass-border bg-glass p-7 shadow-card backdrop-blur-xl md:grid-cols-[1fr_auto] md:items-center md:p-10"><div><p className="text-xs font-semibold uppercase text-primary">Resume</p><h2 className="mt-2 font-display text-3xl font-semibold">Want a concise view of my experience?</h2></div><Button asChild variant="portfolio" size="lg"><a href={resumeUrl} download><Download /> Download Resume</a></Button></div></section>
+        <section id="resume" className="mx-auto max-w-6xl px-5 py-16 sm:px-6"><div className="grid gap-6 rounded-3xl border border-glass-border bg-glass p-7 shadow-card backdrop-blur-xl md:grid-cols-[1fr_auto] md:items-center md:p-10"><div><p className="text-xs font-semibold uppercase text-primary">Resume</p><h2 className="mt-2 font-display text-3xl font-semibold">Want a concise view of my experience?</h2></div><Button asChild variant="portfolio" size="lg">
+          <a
+            href={resumeUrl}
+           download
+           onClick={() => {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+              event: "resume_download",
+              button_position: "bottom",
+            });
+           }}
+          >
+  <Download /> Download Resume
+</a></Button></div></section>
 
         <section id="contact" className="mx-auto max-w-6xl px-5 pb-16 sm:px-6 md:pb-20"><div className="grid gap-8 rounded-3xl border border-glass-border bg-glass p-8 shadow-card backdrop-blur-xl md:grid-cols-[1.3fr_0.7fr] md:p-12"><div><p className="text-xs font-semibold uppercase text-primary">Contact</p><h2 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Let’s connect.</h2><p className="mt-3 max-w-lg leading-relaxed text-muted-foreground">I’m open to product and data analytics opportunities, collaborations, and interesting data problems.</p></div><div className="flex flex-wrap items-center gap-3 md:justify-end">
           {contactLinks.email ? <Button asChild variant="glass" size="icon"><a href={`mailto:${contactLinks.email}`} aria-label="Email Atharva"><Mail /></a></Button> : <Button variant="glass" size="icon" disabled aria-label="Email link ready to add"><Mail /></Button>}
