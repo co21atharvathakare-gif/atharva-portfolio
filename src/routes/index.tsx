@@ -63,6 +63,16 @@ function NavLinks({ mobile = false }: { mobile?: boolean }) {
     ) : (
       <a
         href={`#${item.toLowerCase()}`}
+        onClick={() => {
+          if (mobile) {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+              event: "nav_click",
+              section: item,
+              button_position: "HB",
+            });
+          }
+        }}
         className={
           mobile
             ? "border-b border-border py-4 text-lg font-medium"
