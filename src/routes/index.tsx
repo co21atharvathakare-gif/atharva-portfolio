@@ -286,18 +286,36 @@ function PortfolioPage() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="portfolio" size="lg">
-                <a href="#projects">
-                  View projects <ArrowDown />
-                </a>
-              </Button>
+  <Button asChild variant="portfolio" size="lg">
+    <a
+      href="#projects"
+      onClick={() => {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "hero_cta_click",
+          button_name: "View projects",
+        });
+      }}
+    >
+      View projects <ArrowDown />
+    </a>
+  </Button>
 
-              <Button asChild variant="glass" size="lg">
-                <a href="#contact">
-                  Contact me <ArrowRight />
-                </a>
-              </Button>
-            </div>
+  <Button asChild variant="glass" size="lg">
+    <a
+      href="#contact"
+      onClick={() => {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "hero_cta_click",
+          button_name: "Contact me",
+        });
+      }}
+    >
+      Contact me <ArrowRight />
+    </a>
+  </Button>
+</div>
 
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-border/70 pt-6">
               <div>
