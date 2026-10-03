@@ -638,6 +638,13 @@ function PortfolioPage() {
                   <a
                     href={`mailto:${contactLinks.email}`}
                     aria-label="Email Atharva"
+                    onClick={() => {
+                      (window as any).dataLayer = (window as any).dataLayer || [];
+                      (window as any).dataLayer.push({
+                        event: "contact_click",
+                        button_name: "Email",
+                      });
+                    }}
                   >
                     <Mail />
                   </a>
@@ -658,6 +665,13 @@ function PortfolioPage() {
                   <a
                     href={contactLinks.linkedIn}
                     aria-label="Atharva on LinkedIn"
+                    onClick={() => {
+                      (window as any).dataLayer = (window as any).dataLayer || [];
+                      (window as any).dataLayer.push({
+                        event: "contact_click",
+                        button_name: "LinkedIn",
+                      });
+                    }}
                   >
                     <Linkedin />
                   </a>
@@ -678,6 +692,13 @@ function PortfolioPage() {
                   <a
                     href={contactLinks.github}
                     aria-label="Atharva on GitHub"
+                    onClick={() => {
+                      (window as any).dataLayer = (window as any).dataLayer || [];
+                      (window as any).dataLayer.push({
+                        event: "contact_click",
+                        button_name: "GitHub",
+                      });
+                    }}
                   >
                     <Github />
                   </a>
